@@ -30,8 +30,9 @@ media/thumbnails/*
 !media/thumbnails/.gitkeep
 media/recordings/*
 !media/recordings/.gitkeep
+# Mídias binárias geradas (apenas dentro de media/ para não conflitar com TypeScript)
+media/**/*.ts
 *.mp4
-*.ts
 *.m3u8
 *.mkv
 *.flv
