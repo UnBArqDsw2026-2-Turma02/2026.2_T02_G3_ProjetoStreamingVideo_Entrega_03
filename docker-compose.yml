@@ -1,0 +1,56 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: streaming_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: streaming_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d streaming_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: streaming_backend
+    restart: always
+    ports:
+      - "3000:3000"   # API REST do NestJS
+      - "1935:1935"   # Porta RTMP de Ingestão (Node-Media-Server)
+      - "8000:8000"   # Porta HTTP HLS (Distribuição de Mídia)
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@db:5432/streaming_db?schema=public"
+      PORT: 3000
+      NODE_ENV: development
+    volumes:
+      - ./media:/app/media
+    command: sh -c "npx prisma db push && npm run start:dev"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: streaming_frontend
+    restart: always
+    ports:
+      - "3001:3000"   # Porta de acesso do Frontend Next.js no navegador
+    environment:
+      NEXT_PUBLIC_API_URL: "http://localhost:3000/api"
+      NODE_ENV: development
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
