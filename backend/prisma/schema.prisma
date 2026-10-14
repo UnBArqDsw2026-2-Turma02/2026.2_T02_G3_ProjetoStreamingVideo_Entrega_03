@@ -1,0 +1,80 @@
+// Prisma Schema - Plataforma de Streaming de Vídeo
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TipoPapel {
+  ESPECTADOR
+  CRIADOR
+  ADMINISTRADOR
+}
+
+enum StatusConteudo {
+  RASCUNHO
+  PROCESSANDO
+  PUBLICADO
+  BLOQUEADO
+  EXCLUIDO
+  FALHOU
+}
+
+enum Visibilidade {
+  PUBLICO
+  NAO_LISTADO
+  PRIVADO
+}
+
+model Usuario {
+  id        String      @id @default(uuid())
+  nome      String
+  email     String      @unique
+  senhaHash String
+  papeis    TipoPapel[] @default([ESPECTADOR])
+  criadoEm  DateTime    @default(now())
+
+  perfil    Perfil?
+  canais    Canal[]
+}
+
+model Perfil {
+  id           String   @id @default(uuid())
+  nomeExibicao String
+  biografia    String?
+  avatarUrl    String?
+  usuarioId    String   @unique
+  usuario      Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+}
+
+model Canal {
+  id        String   @id @default(uuid())
+  nome      String
+  descricao String?
+  criadoEm  DateTime @default(now())
+  usuarioId String
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  transmissoes TransmissaoAoVivo[]
+}
+
+model TransmissaoAoVivo {
+  id                      String         @id @default(uuid())
+  titulo                  String
+  descricao               String?
+  visibilidade            Visibilidade   @default(PUBLICO)
+  status                  StatusConteudo @default(RASCUNHO)
+  chaveTransmissao        String         @unique
+  inicioPrevisto          DateTime?
+  iniciadaEm              DateTime?
+  encerradaEm             DateTime?
+  urlStreamHls            String?
+  espectadoresSimultaneos Int            @default(0)
+  canalId                 String
+  canal                   Canal          @relation(fields: [canalId], references: [id], onDelete: Cascade)
+  criadoEm                DateTime       @default(now())
+}
