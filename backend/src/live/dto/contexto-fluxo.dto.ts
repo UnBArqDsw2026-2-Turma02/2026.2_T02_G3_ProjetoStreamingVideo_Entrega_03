@@ -12,5 +12,10 @@ export class ContextoFluxo {
     return this.statusAtual;
   }
 
-  atualizarStatus(novoStatus: StatusEtapaPipeline): void {}
+  atualizarStatus(novoStatus: StatusEtapaPipeline, mensagemErro?: string): void {
+    this.statusAtual = novoStatus;
+    if (mensagemErro) {
+      this.mensagemErro = mensagemErro;
+    }
+  }
 }
