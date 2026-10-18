@@ -1,4 +1,4 @@
-@startuml
+@startuml GofCriacional_Refatorado
 skinparam classAttributeIconSize 0
 skinparam linetype ortho
 
