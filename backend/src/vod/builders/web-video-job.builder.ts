@@ -2,7 +2,7 @@ import type { IJobBuilder } from '../interfaces/job-builder.interface';
 import { JobWebVideo } from '../jobs/job-web-video';
 
 /**
- * Builder concreto para construção de instâncias de JobWebVideo (GoF Criacional: Builder).
+ * Builder concreto para construção de instâncias de JobWebVideo
  */
 export class WebVideoJobBuilder implements IJobBuilder {
   private jobAtual: JobWebVideo;

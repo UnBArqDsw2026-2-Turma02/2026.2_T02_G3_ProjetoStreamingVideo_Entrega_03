@@ -126,6 +126,11 @@ async function main() {
     console.log(`      - Tamanho: ${(vStats.size / 1024).toFixed(2)} KB`);
   }
 
+  console.log('\n🎯 URLs WebVideo disponíveis na entidade Video (seleção por resolução pela aplicação cliente):');
+  for (const res of video.getResolucoesDisponiveisWebVideo()) {
+    console.log(`   - [${res}]: ${video.getUrlWebVideo(res)}`);
+  }
+
   console.log('\n=====================================================');
   console.log('🎉 Transcodificação concluída com sucesso!');
   console.log('   Padrões GoF Builder e Prototype validados em tempo de execução.');

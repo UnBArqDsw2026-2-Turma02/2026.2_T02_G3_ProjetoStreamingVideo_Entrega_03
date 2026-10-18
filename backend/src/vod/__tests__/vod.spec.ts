@@ -144,6 +144,35 @@ describe('VOD Transcoding Architecture - GoF Criacional (Builder & Prototype)', 
     });
   });
 
+  describe('Gerenciamento de Múltiplas Resoluções WebVideo na Entidade Video', () => {
+    it('deve armazenar e recuperar múltiplas URLs de WebVideo por resolução', () => {
+      const video = new Video('/fake/orig.mp4');
+
+      video.setUrlWebVideo('1080p', '/media/vod/web/orig_1080p.mp4');
+      video.setUrlWebVideo('720p', '/media/vod/web/orig_720p.mp4');
+      video.setUrlWebVideo('360p', '/media/vod/web/orig_360p.mp4');
+
+      // Aplicação cliente seleciona resolução específica
+      expect(video.getUrlWebVideo('1080p')).toBe('/media/vod/web/orig_1080p.mp4');
+      expect(video.getUrlWebVideo('720p')).toBe('/media/vod/web/orig_720p.mp4');
+      expect(video.getUrlWebVideo('360p')).toBe('/media/vod/web/orig_360p.mp4');
+      expect(video.getUrlWebVideo('480p')).toBe(''); // Resolução não transcodificada
+
+      // Verificação de disponibilidade e lista de resoluções
+      expect(video.hasResolucaoWebVideo('720p')).toBe(true);
+      expect(video.hasResolucaoWebVideo('480p')).toBe(false);
+      expect(video.getResolucoesDisponiveisWebVideo()).toEqual(['1080p', '720p', '360p']);
+
+      // Mapa completo de URLs
+      const mapUrls = video.getUrlsWebVideo();
+      expect(mapUrls.size).toBe(3);
+      expect(mapUrls.get('720p')).toBe('/media/vod/web/orig_720p.mp4');
+
+      // Fallback sem parâmetro retorna a primeira URL disponível
+      expect(video.getUrlWebVideo()).toBe('/media/vod/web/orig_1080p.mp4');
+    });
+  });
+
   describe('Entidade Cliente Video e Execução de Transcodificação', () => {
     it('deve transcodificar WebVideo MP4 utilizando raw_video.mp4 e atualizar urlWebVideo', async () => {
       expect(fs.existsSync(rawVideoPath)).toBe(true);

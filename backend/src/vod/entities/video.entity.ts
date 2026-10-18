@@ -9,7 +9,7 @@ import { JobHLS } from '../jobs/job-hls';
  */
 export class Video {
   private videoOriginalUrl: string = '';
-  private urlWebVideo: string = '';
+  private urlsWebVideo: Map<string, string> = new Map<string, string>();
   private urlHLS: string = '';
 
   constructor(videoOriginalUrl: string = '') {
@@ -24,12 +24,55 @@ export class Video {
     this.videoOriginalUrl = url;
   }
 
-  public getUrlWebVideo(): string {
-    return this.urlWebVideo;
+  /**
+   * Obtém a URL do WebVideo para uma resolução específica.
+   * Se nenhuma resolução for especificada, retorna a primeira disponível (ou string vazia se inexistente).
+   * Permite que aplicações clientes escolham o vídeo de qualquer resolução já transcodificada.
+   * @param resolucao Resolução desejada (ex: '1080p', '720p', '480p', '360p').
+   */
+  public getUrlWebVideo(resolucao?: string): string {
+    if (resolucao) {
+      return this.urlsWebVideo.get(resolucao) || '';
+    }
+    if (this.urlsWebVideo.size > 0) {
+      return this.urlsWebVideo.values().next().value || '';
+    }
+    return '';
   }
 
-  public setUrlWebVideo(url: string): void {
-    this.urlWebVideo = url;
+  /**
+   * Retorna uma cópia do Map de todas as URLs de WebVideo transcodificadas indexadas por resolução.
+   */
+  public getUrlsWebVideo(): Map<string, string> {
+    return new Map(this.urlsWebVideo);
+  }
+
+  /**
+   * Retorna a lista de resoluções de WebVideo atualmente disponíveis.
+   */
+  public getResolucoesDisponiveisWebVideo(): string[] {
+    return Array.from(this.urlsWebVideo.keys());
+  }
+
+  /**
+   * Verifica se uma determinada resolução de WebVideo já está disponível.
+   */
+  public hasResolucaoWebVideo(resolucao: string): boolean {
+    return this.urlsWebVideo.has(resolucao);
+  }
+
+  /**
+   * Define uma URL de WebVideo.
+   * Suporta sobrecarga:
+   * - setUrlWebVideo(resolucao, url): associa a URL diretamente à resolução informada.
+   * - setUrlWebVideo(url): associa a URL à chave 'default'.
+   */
+  public setUrlWebVideo(resolucaoOuUrl: string, url?: string): void {
+    if (url !== undefined) {
+      this.urlsWebVideo.set(resolucaoOuUrl, url);
+    } else {
+      this.urlsWebVideo.set('default', resolucaoOuUrl);
+    }
   }
 
   public getUrlHLS(): string {
@@ -42,7 +85,7 @@ export class Video {
 
   /**
    * Solicita a transcodificação utilizando um builder fornecido.
-   * Constrói o job, o executa e atualiza os atributos urlWebVideo ou urlHLS de acordo com o tipo de job.
+   * Constrói o job, o executa e atualiza os atributos urlsWebVideo ou urlHLS de acordo com o tipo de job.
    * @param builder Instância de IJobBuilder configurada ou a ser complementada com o vídeo de origem.
    * @returns O caminho/URL do arquivo ou playlist transcodificada gerada.
    */
@@ -57,7 +100,7 @@ export class Video {
     const resultado = await job.executarJob();
 
     if (job instanceof JobWebVideo) {
-      this.urlWebVideo = resultado;
+      this.urlsWebVideo.set(job.getResolucao(), resultado);
     } else if (job instanceof JobHLS) {
       this.urlHLS = resultado;
     }
@@ -69,6 +112,7 @@ export class Video {
    * Aplicação prática do padrão GoF Criacional: Prototype.
    * A partir de um job protótipo já configurado, clona-o para produzir múltiplas variantes de resolução
    * sem precisar redefinir parâmetros comuns como caminho de origem ou diretório de saída.
+   * Todas as resoluções transcodificadas são armazenadas em urlsWebVideo indexadas pela resolução.
    * @param jobPrototipo Instância base de IJob a ser clonada.
    * @param resolucoes Lista de resoluções desejadas (ex: ['720p', '480p', '360p']).
    * @returns Lista de caminhos gerados para cada resolução.
@@ -87,8 +131,8 @@ export class Video {
       const pathGerado = await jobClonado.executarJob();
       resultados.push(pathGerado);
 
-      if (jobClonado instanceof JobWebVideo && !this.urlWebVideo) {
-        this.urlWebVideo = pathGerado;
+      if (jobClonado instanceof JobWebVideo) {
+        this.urlsWebVideo.set(resolucao, pathGerado);
       } else if (jobClonado instanceof JobHLS && !this.urlHLS) {
         this.urlHLS = pathGerado;
       }

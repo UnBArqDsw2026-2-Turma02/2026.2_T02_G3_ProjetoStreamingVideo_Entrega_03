@@ -2,7 +2,7 @@ import type { IJobBuilder } from '../interfaces/job-builder.interface';
 import { JobHLS } from '../jobs/job-hls';
 
 /**
- * Builder concreto para construção de instâncias de JobHLS (GoF Criacional: Builder).
+ * Builder concreto para construção de instâncias de JobHLS
  * Permite configurar resolução única ou múltiplas resoluções para compor uma Master Playlist HLS.
  */
 export class HlsJobBuilder implements IJobBuilder {
