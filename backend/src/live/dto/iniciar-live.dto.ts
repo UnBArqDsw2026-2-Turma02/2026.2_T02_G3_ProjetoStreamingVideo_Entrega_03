@@ -1,5 +1,5 @@
 export class IniciarLiveDto {
-  idTransmissao: string;
+  idTransmissao?: string;
   chaveTransmissao: string;
   rtmpUrl?: string;
 }

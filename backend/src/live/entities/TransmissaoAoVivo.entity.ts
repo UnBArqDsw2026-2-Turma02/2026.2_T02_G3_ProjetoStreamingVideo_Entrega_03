@@ -1,5 +1,4 @@
 import { StatusEtapaPipeline } from '../enums/status-etapa-pipeline.enum';
-import { ContextoFluxo } from '../dto/contexto-fluxo.dto';
 
 export class TransmissaoAoVivo {
   id: string;
@@ -8,6 +7,9 @@ export class TransmissaoAoVivo {
   hlsUrl: string;
   status: StatusEtapaPipeline;
   mensagemErro?: string;
+  inicioPrevisto?: Date;
+  iniciadaEm?: Date;
+  encerradaEm?: Date;
 
   constructor(id: string, chaveTransmissao: string, rtmpUrl: string = '') {
     this.id = id;
@@ -17,10 +19,15 @@ export class TransmissaoAoVivo {
     this.status = StatusEtapaPipeline.RECEBIDO;
   }
 
-  sincronizarComContexto(contexto: ContextoFluxo): void {
-    this.status = contexto.statusAtual;
-    this.rtmpUrl = contexto.rtmpUrl;
-    this.hlsUrl = contexto.hlsUrl;
-    this.mensagemErro = contexto.mensagemErro;
+  iniciar(): void {
+    this.iniciadaEm = new Date();
+  }
+
+  encerrar(): void {
+    this.encerradaEm = new Date();
+  }
+
+  validarChave(chave: string): boolean {
+    return Boolean(chave && this.chaveTransmissao === chave.trim());
   }
 }
