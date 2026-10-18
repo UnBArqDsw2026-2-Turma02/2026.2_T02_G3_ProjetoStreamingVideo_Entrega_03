@@ -65,7 +65,7 @@ export class LiveService {
         }
       }
     } catch {
-      // Ignora erro na busca de diretório
+      
     }
 
     if (idAtivo) {
