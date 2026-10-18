@@ -31,6 +31,14 @@ export class NmsService implements OnModuleInit, OnModuleDestroy {
     try {
       this.nms = new NodeMediaServer(config);
 
+      this.nms.on('postPublish', (id: string, StreamPath: string) => {
+        this.logger.log(`[RTMP Ingest] Transmissão conectada em: ${StreamPath} (Sessão: ${id})`);
+      });
+
+      this.nms.on('donePublish', (id: string, StreamPath: string) => {
+        this.logger.log(`[RTMP Ingest] Transmissão finalizada em: ${StreamPath} (Sessão: ${id})`);
+      });
+
       this.nms.run();
       this.logger.log(
         `NodeMediaServer operacional: Ingestão RTMP (: ${rtmpPort}) | Distribuição HLS (: ${httpPort})`,
