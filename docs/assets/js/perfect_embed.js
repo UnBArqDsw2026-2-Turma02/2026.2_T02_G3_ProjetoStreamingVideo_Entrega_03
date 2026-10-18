@@ -665,6 +665,21 @@ const EMBED_STYLE_TEMPLATE = `
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
 
+    .embed-canvas svg foreignObject hr {
+      margin: 0 !important;
+      margin-top: 3px !important;
+      margin-bottom: 3px !important;
+      padding: 0 !important;
+      border: none !important;
+      border-top: 1px solid #9db6c8 !important;
+      height: 0 !important;
+      box-sizing: content-box !important;
+    }
+
+    .embed-canvas svg foreignObject div {
+      line-height: 1.2 !important;
+    }
+
     .toolbar-top, .toolbar-bottom {
       min-height: 52px;
       display: flex;
