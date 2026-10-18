@@ -22,29 +22,27 @@ export class LiveController {
       throw new BadRequestException('Os campos idTransmissao e chaveTransmissao são obrigatórios.');
     }
 
-    const resultado = await this.liveService.iniciar(dto);
+    const transmissao = await this.liveService.iniciar(dto);
 
-    if (resultado.statusAtual === StatusEtapaPipeline.DISTRIBUIDO) {
+    if (transmissao.status === StatusEtapaPipeline.DISTRIBUIDO) {
       return {
         sucesso: true,
-        idTransmissao: resultado.idTransmissao,
-        status: resultado.statusAtual,
-        hlsUrl: resultado.hlsUrl,
+        transmissao,
       };
     }
 
-    if (resultado.statusAtual === StatusEtapaPipeline.FALHA_AUTENTICACAO) {
+    if (transmissao.status === StatusEtapaPipeline.FALHA_AUTENTICACAO) {
       throw new UnauthorizedException({
         sucesso: false,
-        status: resultado.statusAtual,
-        erro: resultado.mensagemErro || 'Chave de transmissão inválida.',
+        status: transmissao.status,
+        erro: transmissao.mensagemErro || 'Chave de transmissão inválida.',
       });
     }
 
     throw new BadRequestException({
       sucesso: false,
-      status: resultado.statusAtual,
-      erro: resultado.mensagemErro || 'Falha no processamento da esteira de transmissão.',
+      status: transmissao.status,
+      erro: transmissao.mensagemErro || 'Falha no processamento da esteira de transmissão.',
     });
   }
 }

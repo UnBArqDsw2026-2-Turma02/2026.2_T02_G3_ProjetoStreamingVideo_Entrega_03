@@ -1,10 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { IniciarLiveDto } from '../dto/iniciar-live.dto';
 import { ContextoFluxo } from '../dto/contexto-fluxo.dto';
-import { StatusEtapaPipeline } from '../enums/status-etapa-pipeline.enum';
 import { GerenciadorDeAutenticacaoDeIngestao } from '../pipeline/1-GerenciadorDeAutenticacaoDeIngestao';
 import { GerenciadorDeTranscodificacao } from '../pipeline/2-GerenciadorDeTranscodificacao';
 import { GerenciadorDeDistribuicaoHls } from '../pipeline/3-GerenciadorDeDistribuicaoHls';
+import { TransmissaoAoVivo } from '../entities/TransmissaoAoVivo.entity';
+
 @Injectable()
 export class LiveService {
   private readonly logger = new Logger(LiveService.name);
@@ -15,15 +16,21 @@ export class LiveService {
     private readonly deliveryHandler: GerenciadorDeDistribuicaoHls,
   ) {}
 
-  async iniciar(dto: IniciarLiveDto): Promise<ContextoFluxo> {
+  async iniciar(dto: IniciarLiveDto): Promise<TransmissaoAoVivo> {
     this.logger.log(`Recebida requisição para iniciar live: ${dto.idTransmissao}`);
 
+    const transmissao = new TransmissaoAoVivo(
+      dto.idTransmissao,
+      dto.chaveTransmissao,
+      dto.rtmpUrl || '',
+    );
+
     const contexto = new ContextoFluxo();
-    contexto.idTransmissao = dto.idTransmissao;
-    contexto.chaveTransmissao = dto.chaveTransmissao;
-    contexto.rtmpUrl = dto.rtmpUrl || '';
+    contexto.idTransmissao = transmissao.id;
+    contexto.chaveTransmissao = transmissao.chaveTransmissao;
+    contexto.rtmpUrl = transmissao.rtmpUrl;
     contexto.hlsUrl = '';
-    contexto.atualizarStatus(StatusEtapaPipeline.RECEBIDO);
+    contexto.atualizarStatus(transmissao.status);
 
     this.authHandler
       .definirProximo(this.transcodeHandler)
@@ -31,14 +38,16 @@ export class LiveService {
 
     const sucesso = await this.authHandler.processar(contexto);
 
+    transmissao.sincronizarComContexto(contexto);
+
     if (sucesso) {
-      this.logger.log(`Esteira de live ${dto.idTransmissao} concluída com sucesso.`);
+      this.logger.log(`Live ${transmissao.id} ativa e distribuída com sucesso.`);
     } else {
       this.logger.warn(
-        `Esteira de live ${dto.idTransmissao} interrompida no estado ${contexto.statusAtual}. Motivo: ${contexto.mensagemErro}`,
+        `Live ${transmissao.id} não pôde ser iniciada. Estado: ${transmissao.status}. Motivo: ${transmissao.mensagemErro}`,
       );
     }
 
-    return contexto;
+    return transmissao;
   }
 }
