@@ -2,9 +2,9 @@ import { Injectable, Logger } from '@nestjs/common';
 import { IniciarLiveDto } from '../dto/iniciar-live.dto';
 import { ContextoFluxo } from '../dto/contexto-fluxo.dto';
 import { StatusEtapaPipeline } from '../enums/status-etapa-pipeline.enum';
-import { GerenciadorDeAutenticacaoDeIngestao } from '../pipeline/1-ingestao-auth.handler';
-import { GerenciadorDeTranscodificacao } from '../pipeline/2-transcodificacao.handler';
-import { GerenciadorDeDistribuicaoHls } from '../pipeline/3-distribuicao-hls.handler';
+import { GerenciadorDeAutenticacaoDeIngestao } from '../pipeline/1-GerenciadorDeAutenticacaoDeIngestao';
+import { GerenciadorDeTranscodificacao } from '../pipeline/2-GerenciadorDeTranscodificacao';
+import { GerenciadorDeDistribuicaoHls } from '../pipeline/3-GerenciadorDeDistribuicaoHls';
 @Injectable()
 export class LiveService {
   private readonly logger = new Logger(LiveService.name);

@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { ManipuladorDeFluxo } from './manipulador-de-fluxo.base';
+import { ManipuladorDeFluxo } from './ManipuladorDeFluxo';
 import { ContextoFluxo } from '../dto/contexto-fluxo.dto';
 import { StatusEtapaPipeline } from '../enums/status-etapa-pipeline.enum';
 
