@@ -3,3 +3,4 @@ export class IniciarLiveDto {
   chaveTransmissao: string;
   rtmpUrl?: string;
 }
+
