@@ -13,7 +13,7 @@ import {
 function findProjectRoot(): string {
   let curr = __dirname;
   while (curr !== path.dirname(curr)) {
-    if (fs.existsSync(path.join(curr, 'docs', 'Base', 'Relatórios', 'SubEquipe_01', 'assets', 'raw_video.mp4'))) {
+    if (fs.existsSync(path.join(curr, 'media', 'vod', 'raw_video.mp4'))) {
       return curr;
     }
     curr = path.dirname(curr);
@@ -25,7 +25,7 @@ describe('VOD Transcoding Architecture - GoF Criacional (Builder & Prototype)', 
   const projectRoot = findProjectRoot();
   const rawVideoPath = path.resolve(
     projectRoot,
-    'docs/Base/Relatórios/SubEquipe_01/assets/raw_video.mp4',
+    'media/vod/raw_video.mp4',
   );
   const testOutputDir = path.resolve(projectRoot, 'media/vod/test_output');
 

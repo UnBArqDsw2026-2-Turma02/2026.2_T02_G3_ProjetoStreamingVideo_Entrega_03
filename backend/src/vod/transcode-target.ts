@@ -28,7 +28,7 @@ async function main() {
   // Localiza o vídeo alvo indicado nos requisitos
   const rawVideoPath = path.resolve(
     projectRoot,
-    'docs/Base/Relatórios/SubEquipe_01/assets/raw_video.mp4',
+    'media/vod/raw_video.mp4',
   );
 
   if (!fs.existsSync(rawVideoPath)) {

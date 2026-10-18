@@ -2,6 +2,9 @@ import type { IJobBuilder } from '../interfaces/job-builder.interface';
 import type { IJob } from '../interfaces/job.interface';
 import { JobWebVideo } from '../jobs/job-web-video';
 import { JobHLS } from '../jobs/job-hls';
+import type { IPlayerFactory } from '../interfaces/player-factory.interface';
+import { HlsPlayerFactory } from '../factories/hls-player.factory';
+import type { IPlayer } from '../interfaces/player.interface';
 
 /**
  * Entidade Cliente do padrão de transcodificação.
@@ -140,4 +143,22 @@ export class Video {
 
     return resultados;
   }
+
+    /**
+     * Aplicação prática do padrão GoF Criacional: Abstract Factory.
+     * Recebe uma fábrica (HLS ou WebVideo) e devolve um player pronto, já com o carregador
+     * de segmentos compatível.
+     * @param fabrica Fábrica da família de reprodução desejada.
+     * @returns Player configurado para o formato da fábrica.
+     */
+    public assistir(fabrica: IPlayerFactory): IPlayer {
+      // A família HLS reproduz a Master Playlist; a família WebVideo reproduz o arquivo MP4
+      const url = fabrica instanceof HlsPlayerFactory ? this.urlHLS : this.getUrlWebVideo();
+  
+      if (!url) {
+        throw new Error('O vídeo ainda não foi transcodificado para o formato desta fábrica.');
+      }
+  
+      return fabrica.criarPlayer(url);
+    }
 }
