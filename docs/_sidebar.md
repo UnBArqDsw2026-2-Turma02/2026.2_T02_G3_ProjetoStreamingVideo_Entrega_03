@@ -2,8 +2,11 @@
 
 - [Home](/)
 - 1.1.1. SubEquipe_01
-    - [GoF Criacional](Base/Relatórios/SubEquipe_01/1.1.1.SubEquipe_01.md)
-    - [IA Generativa](Base/Relatórios/SubEquipe_01/1.1.1.SubEquipe_01.md)
+    - [GOF - Comportamental](Base/Relatórios/SubEquipe_01/1.GOF_Resumo.md)
+    - [Modelagem Estática](Base/Relatórios/SubEquipe_01/2.GOF_Estatico.md)
+    - [Modelagem Dinâmica](Base/Relatórios/SubEquipe_01/3.GOF_Dinamico.md)
+    - [Código e Execução](Base/Relatórios/SubEquipe_01/4.GOF_Execucao.md)
+    - [IA Generativa](Base/Relatórios/SubEquipe_01/5.IAGenerativa.md)
 - 1.1.2. SubEquipe_02
     - [GoF Criacional](Base/Relatórios/SubEquipe_02/1.1.2.SubEquipe_02.md)
     - [IA Generativa](Base/Relatórios/SubEquipe_02/1.1.2.SubEquipe_02.md)
