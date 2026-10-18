@@ -32,8 +32,14 @@ export class GerenciadorDeAutenticacaoDeIngestao extends ManipuladorDeFluxo {
         return false;
       }
 
+      const portaRtmp = process.env.RTMP_PORT || '1935';
+      const hostRtmp = process.env.RTMP_HOST || 'localhost';
+      dados.rtmpUrl = dados.rtmpUrl || `rtmp://${hostRtmp}:${portaRtmp}/live/${dados.idTransmissao}`;
+
       dados.atualizarStatus(StatusEtapaPipeline.AUTENTICADO);
-      this.logger.log(`Transmissão ${dados.idTransmissao} autenticada com sucesso.`);
+      this.logger.log(
+        `Transmissão ${dados.idTransmissao} autenticada com sucesso. Canal RTMP: ${dados.rtmpUrl}`,
+      );
 
       return await this.processarProximo(dados);
     } catch (error: any) {
