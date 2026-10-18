@@ -1,0 +1,129 @@
+@startuml GofCriacional_Refatorado
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam nodesep 80
+skinparam ranksep 70
+
+' ===== INTERFACES BASE =====
+interface IJobPrototype {
+    + clone(): IJob
+}
+
+interface IJob {
+    - videoUrl: String
+    - resolucao: String
+    - outputDir: String
+    + getVideoUrl(): String
+    + setVideoUrl(videoUrl: String): void
+    + getResolucao(): String
+    + setResolucao(resolucao: String): void
+    + getOutputDir(): String
+    + setOutputDir(outputDir: String): void
+    + executarJob(): Promise<String>
+    + clone(): IJob
+}
+
+IJob --|> IJobPrototype
+
+' ===== CLIENTE (Topo do diagrama) =====
+class Video {
+    - videoOriginalUrl: String
+    - urlWebVideo: String
+    - urlHLS: String
+    + getVideoOriginalUrl(): String
+    + setVideoOriginalUrl(url: String): void
+    + getUrlWebVideo(): String
+    + setUrlWebVideo(url: String): void
+    + getUrlHLS(): String
+    + setUrlHLS(url: String): void
+    + solicitarTranscodificacao(builder: IJobBuilder): Promise<String>
+    + solicitarVariantesResolucao(jobPrototipo: IJob, resolucoes: String[]): Promise<String[]>
+}
+
+' ===== INTERFACE BUILDER (Nível 2) =====
+interface IJobBuilder {
+    + reset(): void
+    + setVideo(videoUrl: String): IJobBuilder
+    + setResolucao(resolucao: String): IJobBuilder
+    + setOutputDir(outputDir: String): IJobBuilder
+    + build(): IJob
+}
+
+' ===== BUILDERS CONCRETOS (Nível 3) =====
+class WebVideoJobBuilder {
+    - jobAtual: JobWebVideo
+    + reset(): void
+    + setVideo(videoUrl: String): IJobBuilder
+    + setResolucao(resolucao: String): IJobBuilder
+    + setOutputDir(outputDir: String): IJobBuilder
+    + setDuracaoSegundos(segundos: Integer): IJobBuilder
+    + build(): JobWebVideo
+}
+
+class HlsJobBuilder {
+    - jobAtual: JobHLS
+    + reset(): void
+    + setVideo(videoUrl: String): IJobBuilder
+    + setResolucao(resolucao: String): IJobBuilder
+    + addResolucao(resolucao: String): IJobBuilder
+    + setResolucoes(resolucoes: String[]): IJobBuilder
+    + setOutputDir(outputDir: String): IJobBuilder
+    + setSegmentDuration(segundos: Integer): IJobBuilder
+    + setDuracaoSegundos(segundos: Integer): IJobBuilder
+    + build(): JobHLS
+}
+
+' ===== JOBS CONCRETOS (Nível 4) =====
+class JobWebVideo {
+    - videoUrl: String
+    - resolucao: String
+    - outputDir: String
+    - duracaoSegundos: Integer
+    + getVideoUrl(): String
+    + setVideoUrl(videoUrl: String): void
+    + getResolucao(): String
+    + setResolucao(resolucao: String): void
+    + getOutputDir(): String
+    + setOutputDir(outputDir: String): void
+    + getDuracaoSegundos(): Integer
+    + setDuracaoSegundos(duracao: Integer): void
+    + executarJob(): Promise<String>
+    + clone(): JobWebVideo
+}
+
+class JobHLS {
+    - videoUrl: String
+    - resolucoes: String[]
+    - outputDir: String
+    - duracaoSegmento: Integer
+    - duracaoSegundos: Integer
+    + getVideoUrl(): String
+    + setVideoUrl(videoUrl: String): void
+    + getResolucao(): String
+    + setResolucao(resolucao: String): void
+    + getResolucoes(): String[]
+    + setResolucoes(resolucoes: String[]): void
+    + addResolucao(resolucao: String): void
+    + getOutputDir(): String
+    + setOutputDir(outputDir: String): void
+    + getDuracaoSegmento(): Integer
+    + setDuracaoSegmento(segundos: Integer): void
+    + getDuracaoSegundos(): Integer
+    + setDuracaoSegundos(duracao: Integer): void
+    + executarJob(): Promise<String>
+    + clone(): JobHLS
+}
+
+Video .down.> IJob : <<usa>>
+Video .down.> IJobBuilder : <<cria>>
+
+WebVideoJobBuilder .up.|> IJobBuilder
+HlsJobBuilder .up.|> IJobBuilder
+
+WebVideoJobBuilder .down.> JobWebVideo : <<cria>>
+HlsJobBuilder .down.> JobHLS : <<cria>>
+
+JobWebVideo .down.|> IJob
+JobHLS .down.|> IJob
+
+@enduml
