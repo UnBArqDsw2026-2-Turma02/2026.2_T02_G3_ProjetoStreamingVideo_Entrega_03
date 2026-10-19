@@ -33,6 +33,10 @@ services:
       NODE_ENV: development
     volumes:
       - ./media:/app/media
+      - ./backend/src:/app/src
+      - ./backend/prisma:/app/prisma
+      - ./backend/package.json:/app/package.json
+      - ./backend/tsconfig.json:/app/tsconfig.json
     command: sh -c "mkdir -p /app/media/live && npx prisma db push && npx ts-node prisma/seed.ts && npm run start:dev"
     depends_on:
       db:
