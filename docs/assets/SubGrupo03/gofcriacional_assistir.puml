@@ -1,0 +1,93 @@
+@startuml
+skin rose
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+' GoF Criacional: Abstract Factory (assistir vídeo)
+' Cada fábrica cria uma FAMÍLIA de objetos compatíveis:
+'   HLS      -> HlsPlayer      + P2PCarregadorSegmentos (segmentos trocados entre espectadores via WebRTC, fallback HTTP)
+'   WebVideo -> WebVideoPlayer + HttpCarregadorSegmentos (arquivo servido direto pelo servidor)
+
+class Video {
+    - urlWebVideo: String
+    - urlHLS: String
+    + assistir(fabrica: IPlayerFactory): IPlayer
+}
+
+interface IPlayerFactory {
+    + criarPlayer(videoUrl: String): IPlayer
+    + criarCarregador(): ICarregadorSegmentos
+}
+
+class WebVideoPlayerFactory {
+    + criarPlayer(videoUrl: String): IPlayer
+    + criarCarregador(): ICarregadorSegmentos
+}
+
+class HlsPlayerFactory {
+    + criarPlayer(videoUrl: String): IPlayer
+    + criarCarregador(): ICarregadorSegmentos
+}
+
+interface IPlayer {
+    - videoUrl: String
+    - resolucao: String
+    + reproduzir(): Promise<String>
+    + pausar(): void
+    + buscar(segundos: Integer): void
+    + setResolucao(resolucao: String): void
+}
+
+class WebVideoPlayer {
+    - videoUrl: String
+    - resolucao: String
+    - carregador: ICarregadorSegmentos
+    + reproduzir(): Promise<String>
+    + pausar(): void
+    + buscar(segundos: Integer): void
+    + setResolucao(resolucao: String): void
+}
+
+class HlsPlayer {
+    - videoUrl: String
+    - resolucao: String
+    - carregador: ICarregadorSegmentos
+    + reproduzir(): Promise<String>
+    + pausar(): void
+    + buscar(segundos: Integer): void
+    + setResolucao(resolucao: String): void
+}
+
+interface ICarregadorSegmentos {
+    + baixarSegmento(url: String): Promise<String>
+}
+
+class HttpCarregadorSegmentos {
+    + baixarSegmento(url: String): Promise<String>
+}
+
+class P2PCarregadorSegmentos {
+    - trackerUrl: String
+    + baixarSegmento(url: String): Promise<String>
+}
+
+Video ..> IPlayerFactory : <<usa>>
+
+IPlayerFactory <|.. WebVideoPlayerFactory
+IPlayerFactory <|.. HlsPlayerFactory
+
+WebVideoPlayerFactory ..> WebVideoPlayer : <<cria>>
+HlsPlayerFactory ..> HlsPlayer : <<cria>>
+WebVideoPlayerFactory ..> HttpCarregadorSegmentos : <<cria>>
+HlsPlayerFactory ..> P2PCarregadorSegmentos : <<cria>>
+
+WebVideoPlayer ..|> IPlayer
+HlsPlayer ..|> IPlayer
+
+HttpCarregadorSegmentos ..|> ICarregadorSegmentos
+P2PCarregadorSegmentos ..|> ICarregadorSegmentos
+
+IPlayer .right.> ICarregadorSegmentos : <<usa>>
+Video ..> IPlayer : <<usa>>
+
+@enduml

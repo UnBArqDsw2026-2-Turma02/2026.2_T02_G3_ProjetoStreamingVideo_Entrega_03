@@ -1,0 +1,71 @@
+@startuml GofCriacional_Refatorado
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+interface IJobPrototype {
+    + clone(): JobTranscodificacao
+}
+
+interface IJobBuilder {
+    + reset(): void
+    + setVideo(video: Video): IJobBuilder
+    + setResolucao(resolucao: String): IJobBuilder
+    + build(): JobTranscodificacao
+}
+
+class JobTranscodificacao {
+    - id: Integer
+    - estadoJob: String = "PENDENTE"
+    - tipoFormatacao: String
+    - resolucao: String
+    - dataInicio: Date
+    + iniciarJob(): void
+    + concluirJob(): void
+    + registrarFalha(): void
+    + clone(): JobTranscodificacao
+    + setResolucao(resolucao: String): void
+}
+
+class HlsJobBuilder {
+    - jobAtual: JobTranscodificacao
+    + reset(): void
+    + setVideo(video: Video): IJobBuilder
+    + setResolucao(resolucao: String): IJobBuilder
+    + build(): JobTranscodificacao
+}
+
+class WebVideoJobBuilder {
+    - jobAtual: JobTranscodificacao
+    + reset(): void
+    + setVideo(video: Video): IJobBuilder
+    + setResolucao(resolucao: String): IJobBuilder
+    + build(): JobTranscodificacao
+}
+
+class Video {
+    - urlWebVideo: String
+    - urlHLS: String
+    + solicitarTranscodificacao(builder: IJobBuilder): void
+}
+
+IJobPrototype <|.. JobTranscodificacao
+IJobBuilder <|.. HlsJobBuilder
+IJobBuilder <|.. WebVideoJobBuilder
+
+HlsJobBuilder ..> JobTranscodificacao : <<cria>>
+WebVideoJobBuilder ..> JobTranscodificacao : <<cria>>
+
+Video ..> IJobBuilder : <<usa para criar job base>>
+Video ..> IJobPrototype : <<usa para criar jobs de menor resolução>>
+/'Video "1" *--> "0..*" JobTranscodificacao : processado_por >'/
+
+/'note right of JobTranscodificacao::clone'/
+/'  Retorna uma cópia do objeto atual.'/
+/'end note'/
+
+/'note right of JobTranscodificacao::setResolucao'/
+/'  Usado após o clone() para'/
+/'  reduzir a resolução do job derivado.'/
+/'end note'/
+
+@enduml

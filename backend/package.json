@@ -18,7 +18,10 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "vod:transcode": "bun run src/vod/transcode-target.ts",
+    "vod:assistir": "bun run src/vod/assistir-target.ts",
+    "vod:test": "bun test src/vod"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.4",
