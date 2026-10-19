@@ -22,6 +22,11 @@ A modelagem do padrão Facade foi realizada de forma colaborativa por todos os i
 
 Com base nessa divisão, foi definida a classe `ReproducaoFacade` como ponto de coordenação entre os elementos do subsistema. A implementação foi desenvolvida no front-end em TypeScript e integrada ao componente React. A documentação relaciona a estrutura representada no diagrama de classes às interfaces e classes efetivamente presentes no projeto.
 
+A gravação da montagem do padrão Facade pela equipe está disponível no vídeo a seguir.
+
+**Vídeo 1 —** Montagem do padrão Facade.  
+[Assista no YouTube](https://youtu.be/RjhG-PO6mQA)
+
 ## 4. Rastreabilidade (diagrama de classes)
 
 O Facade está representado no diagrama de classes apresentado na Seção 5 (Figura 1), derivado do diagrama de classes de domínio da plataforma, no qual o componente de interface acessa a fachada para utilizar os serviços necessários à sessão.
@@ -205,3 +210,4 @@ A modelagem desenvolvida coletivamente pela Equipe 2 estabelece a divisão de re
 | Versão | Data | Descrição | Autor | Revisor |
 | --- | --- | --- | --- | --- |
 | 1.0 |  17/10/2026 | Modelagem do padrão e documentação de sua aplicação à plataforma de streaming | [Enzo Menali](https://github.com/menali17), [Geovanna Umbelino](https://github.com/GeovannaUmbelino), [Lucas Oliveira](https://github.com/dev-LucasDpaula) e [Paulo Vitor Gomes](https://github.com/gpaulovit) | [Pedro Americo](https://github.com/dev-americo) |
+| 1.1 | 19/10/2026 | Adição do link para o vídeo de montagem do padrão | [Paulo Vitor Gomes](https://github.com/gpaulovit) | |
