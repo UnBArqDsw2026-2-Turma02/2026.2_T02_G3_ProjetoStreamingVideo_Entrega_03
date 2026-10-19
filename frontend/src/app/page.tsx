@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 interface StatusBackend {
   status: string;
@@ -91,11 +92,26 @@ export default function HomePage() {
       <section style={{ marginTop: '32px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '16px' }}>
         <div style={{ backgroundColor: '#1e293b', padding: '20px', borderRadius: '8px', border: '1px solid #334155' }}>
           <h3 style={{ color: '#38bdf8', marginTop: 0 }}>Subgrupo 1 (Live)</h3>
-          <p style={{ color: '#94a3b8', fontSize: '14px' }}>
+          <p style={{ color: '#94a3b8', fontSize: '14px', marginBottom: '16px' }}>
             Porta RTMP: 1935<br />
             Porta HLS: 8000<br />
             GoF: Chain of Responsibility
           </p>
+          <Link
+            href="/live"
+            style={{
+              display: 'inline-block',
+              backgroundColor: '#9333ea',
+              color: '#ffffff',
+              padding: '8px 16px',
+              borderRadius: '6px',
+              textDecoration: 'none',
+              fontSize: '13px',
+              fontWeight: 'bold',
+            }}
+          >
+            🔴 Acessar Estúdio & Player Live →
+          </Link>
         </div>
 
         <div style={{ backgroundColor: '#1e293b', padding: '20px', borderRadius: '8px', border: '1px solid #334155' }}>
