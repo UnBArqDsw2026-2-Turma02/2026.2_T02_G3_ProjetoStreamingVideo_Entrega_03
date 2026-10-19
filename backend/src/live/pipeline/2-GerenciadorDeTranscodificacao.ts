@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, BadRequestException } from '@nestjs/common';
 import { ManipuladorDeFluxo } from './ManipuladorDeFluxo';
 import { ContextoFluxo } from '../dto/contexto-fluxo.dto';
 import { FFmpegService } from '../services/ffmpeg.service';
@@ -17,18 +17,15 @@ export class GerenciadorDeTranscodificacao extends ManipuladorDeFluxo {
         dados.idTransmissao,
         dados.rtmpUrl,
       );
-      //caminho provisório ou master que o próximo elo utilizará
       dados.hlsUrl = playlistMaster;
       dados.atualizarStatus(StatusEtapaPipeline.TRANSCODIFICADO);
       this.logger.log(`Transcodificação iniciada com sucesso. Avançando para o próximo elo.`);
       return await this.processarProximo(dados);
     } catch (error: any) {
-      this.logger.error(`Falha na etapa de transcodificação: ${error?.message}`);
-      dados.atualizarStatus(
-        StatusEtapaPipeline.FALHA_TRANSCODIFICACAO,
-        error?.message || 'Erro desconhecido durante o processo de transcodificação',
-      );
-      return false; 
+      const mensagem = error?.message || 'Erro durante o processo de transcodificação.';
+      this.logger.error(`Falha na etapa de transcodificação: ${mensagem}`);
+      dados.atualizarStatus(StatusEtapaPipeline.FALHA_TRANSCODIFICACAO, mensagem);
+      throw new BadRequestException(mensagem);
     }
   }
 }
