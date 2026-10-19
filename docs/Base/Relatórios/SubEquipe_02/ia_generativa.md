@@ -17,4 +17,4 @@ Esta seção apresenta os principais aprendizados dos integrantes durante a Entr
 | --- | --- | --- | --- | --- |
 | 1.0 | 17/10/2026 | Adição da reflexão individual sobre os aprendizados e o uso crítico da IA Generativa na Entrega 3. | [Geovanna Umbelino](https://github.com/GeovannaUmbelino) |   [Enzo Menali](https://github.com/menali17)  |
 | 1.1 | 18/10/2026 | Adição da reflexão individual sobre os aprendizados e o uso crítico da IA Generativa na Entrega 3. | [Lucas Oliveira](https://github.com/dev-LucasDpaula) |   [Paulo Victor](https://github.com/gpaulovit)  |
-| 1.2 | 18/10/2026 | Adição da reflexão individual de Enzo Menali sobre Adapter, Facade e o uso crítico de IA Generativa; correção da identificação para Foco_02. | [Enzo Menali](https://github.com/menali17) |  [Lucas Oliveira](https://github.com/dev-LucasDpaula) |
+| 1.2 | 18/10/2026 | Adição da reflexão individual sobre aprendizado e uso da IA generativa na entrega 3 | [Enzo Menali](https://github.com/menali17) |  [Lucas Oliveira](https://github.com/dev-LucasDpaula) |
