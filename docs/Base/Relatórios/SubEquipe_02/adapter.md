@@ -22,6 +22,11 @@ A aplicação do padrão foi desenvolvida coletivamente pelos integrantes da **E
 
 A modelagem definiu o contrato `IPlayer`, o adaptador `HlsJsPlayerAdapter`, a biblioteca `Hls` e a classe cliente `ReproducaoFacade`. A implementação correspondente foi realizada no front-end em TypeScript, utilizando a biblioteca `hls.js` e os recursos de mídia do navegador. A relação entre esses elementos é apresentada nas seções de rastreabilidade, modelagem e código-fonte.
 
+A gravação da montagem do padrão Adapter pela equipe está disponível no vídeo a seguir.
+
+**Vídeo 1 —** Montagem do padrão Adapter.  
+[Assista no YouTube](https://youtu.be/BQ8IfCvFp7w)
+
 ## 4. Rastreabilidade (diagrama de classes)
 
 O Adapter está representado no diagrama de classes apresentado na Seção 5 (Figura 1), derivado do diagrama de classes de domínio da plataforma, especialmente na relação entre a fachada responsável pela sessão, a interface de reprodução e a biblioteca externa.
@@ -154,3 +159,4 @@ A modelagem elaborada coletivamente pela Equipe 2 e sua correspondência com o c
 | Versão | Data | Descrição | Autor | Revisor |
 | --- | --- | --- | --- | --- |
 | 1.0 | 17/10/2026 | Modelagem do padrão e documentação de sua aplicação à plataforma de streaming | [Enzo Menali](https://github.com/menali17), [Geovanna Umbelino](https://github.com/GeovannaUmbelino), [Lucas Oliveira](https://github.com/dev-LucasDpaula) e [Paulo Vitor Gomes](https://github.com/gpaulovit) | [Pedro Americo](https://github.com/dev-americo) |
+| 1.1 | 19/10/2026 | Adição do link para o vídeo de montagem do padrão | [Paulo Vitor Gomes](https://github.com/gpaulovit) | |
