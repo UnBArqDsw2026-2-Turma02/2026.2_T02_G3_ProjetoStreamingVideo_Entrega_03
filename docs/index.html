@@ -94,6 +94,29 @@
       background: #ddd2ff;
     }
 
+    /* =========================================================================
+       RESET PARA FOREIGNOBJECT DE SVGS (DRAW.IO)
+       Evita que estilos globais do Docsify (como margens de hr e line-height)
+       desalinhem os textos e empurrem métodos para fora das caixas do diagrama.
+       ========================================================================= */
+    .embed-canvas svg foreignObject hr,
+    .svg-embed-container svg foreignObject hr,
+    svg foreignObject hr {
+      margin: 0 !important;
+      margin-top: 3px !important;
+      margin-bottom: 3px !important;
+      padding: 0 !important;
+      border: none !important;
+      border-top: 1px solid #9db6c8 !important;
+      height: 0 !important;
+      box-sizing: content-box !important;
+    }
+
+    .embed-canvas svg foreignObject div,
+    svg foreignObject div {
+      line-height: 1.2 !important;
+    }
+
     /* =========================
        MENU LATERAL
     ========================= */
