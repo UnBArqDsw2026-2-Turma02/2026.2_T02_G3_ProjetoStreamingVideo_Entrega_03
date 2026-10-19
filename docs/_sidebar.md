@@ -17,7 +17,7 @@
     - [IA Generativa](Base/Relatórios/SubEquipe_03/1.1.3.SubEquipe_03.md)
     - [Ferramentas](IniciativasExtras/ferramentas.md)
 - [1.2. Participações GoF](Base/1.2.ParticipacoesPadroesDeProjeto.md)
-- [Padrão do Projeto](Base/1.PadroesDeProjeto.md)
+<!-- - [Padrão do Projeto](Base/1.PadroesDeProjeto.md) -->
 - 1.4. Documentação das Reuniões
     <!-- -  [Subequipe_01](IniciativasExtras/Atas.md) -->
     -  [Subequipe_02](IniciativasExtras/Atas_equipe2.md)
