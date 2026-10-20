@@ -177,6 +177,24 @@ O componente React `ReproducaoEInteracoes` utiliza a fachada para preparar e con
 
 A página `frontend/src/app/demonstracao/page.tsx` configura o serviço de vídeos e o provedor do player utilizados nessa integração.
 
+## Evidências da Implementação e Demonstração
+
+### Apresentação do Código e Demonstração
+
+A implementação do padrão **Facade** foi apresentada em uma gravação conjunta da SubEquipe 02, que também contempla a explicação do padrão Adapter.
+
+Na apresentação, foram explicadas as responsabilidades da classe `ReproducaoFacade`, sua relação com o `ServicoDeVideos` e a organização das operações utilizadas pelo componente `ReproducaoEInteracoes`.
+
+A gravação permite acompanhar a estrutura do código e compreender como o Facade contribui para simplificar o acesso às funcionalidades de reprodução da plataforma.
+
+**Vídeo da apresentação:** [Assistir à explicação e demonstração](https://www.youtube.com/watch?v=PfnSCj9nGYI)
+
+### Registro da Implementação
+
+As contribuições relacionadas ao desenvolvimento e à documentação do padrão Facade estão registradas no histórico de versionamento do repositório.
+
+**Commit:** [Visualizar registro no GitHub](https://github.com/UnBArqDsw2026-2-Turma02/2026.2_T02_G3_ProjetoStreamingVideo_Entrega_03/commits/feat/configura%C3%A7%C3%A3o-inicial-para-desenvolvimento/)
+
 ## 7. Análise crítica
 
 A aplicação do Facade reduz a quantidade de detalhes que o componente React precisa conhecer para controlar a reprodução. A fachada centraliza a consulta ao catálogo, a criação do player, a observação dos eventos e o encerramento da sessão, contribuindo para a **separação de responsabilidades** entre apresentação e controle da reprodução.
@@ -186,6 +204,8 @@ A utilização de `ServicoDeVideos` e `PlayerProvider` como dependências recebi
 Como limitação, a implementação atual utiliza um catálogo local, de modo que a fachada ainda não coordena uma consulta ao back-end NestJS. Também não há suporte a transmissões ao vivo: o diagrama de domínio prevê `TransmissaoAoVivo`, mas `ServicoDeVideos` atende apenas vídeos sob demanda. A fachada também expõe ao cliente os tipos de evento do player (`PlaybackEvent`), e `prepararVideo()` recebe um `HTMLVideoElement`, o que mantém o componente React parcialmente acoplado ao subsistema de reprodução. Além disso, a classe concentra o gerenciamento de estados, observadores e cancelamento da preparação, responsabilidades que exigem atenção para evitar crescimento excessivo da fachada conforme novas funcionalidades forem incorporadas.
 
 Na correspondência entre o diagrama e o código, a estrutura principal está representada, mas o gerenciamento interno da sessão é mais detalhado na implementação. O código utiliza `EstadoDaSessao`, uma referência opcional a `IPlayer` e mecanismos de inscrição e cancelamento. O tipo `Video` é uma interface TypeScript, e não uma classe concreta, e o cliente `ReproducaoEInteracoes` é um componente funcional React, representado no diagrama como classe apenas para fins de modelagem. Esses aspectos são relevantes para interpretar corretamente as responsabilidades e relações UML.
+
+
 
 ## 8. Conclusão
 

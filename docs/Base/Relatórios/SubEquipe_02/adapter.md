@@ -126,6 +126,24 @@ private player?: IPlayer;
 ```
 O contrato permite que a fachada invoque as operações de reprodução sem reproduzir a lógica específica da biblioteca HLS.
 
+
+## Evidências da Implementação e Demonstração
+
+### Apresentação do Código e Demonstração
+
+A implementação do padrão **Adapter** foi apresentada em uma gravação realizada pelos integrantes da SubEquipe 02, na qual foram explicadas a interface `IPlayer`, a classe `HlsJsPlayerAdapter` e sua relação com a biblioteca `hls.js`.
+
+Durante a apresentação, foram abordadas as responsabilidades do padrão, a organização do código e sua aplicação na reprodução de vídeos da plataforma.
+
+**Vídeo da apresentação:** [Assistir à explicação e demonstração](https://www.youtube.com/watch?v=PfnSCj9nGYI)
+
+### Registro da Implementação
+
+O desenvolvimento e a documentação do padrão também podem ser acompanhados pelos registros de versionamento do projeto, que incluem as contribuições realizadas pela subequipe.
+
+**Commit:** [Visualizar registro no GitHub](https://github.com/UnBArqDsw2026-2-Turma02/2026.2_T02_G3_ProjetoStreamingVideo_Entrega_03/commits/feat/configura%C3%A7%C3%A3o-inicial-para-desenvolvimento/)
+
+
 ## 7. Análise crítica
 
 A aplicação do Adapter apresenta como principal benefício a **redução do acoplamento** entre o gerenciamento da sessão e a biblioteca `hls.js`. O contrato `IPlayer` concentra as operações que interessam ao cliente, enquanto `HlsJsPlayerAdapter` mantém a responsabilidade de traduzir chamadas, lidar com eventos e liberar os recursos do player.
